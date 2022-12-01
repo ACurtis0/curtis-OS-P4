@@ -221,40 +221,45 @@ SystemStats Simulation::calculate_statistics() {
     // TODO: Calculate the system statistics
     /*
     Member variables:
-    size_t total_time = 0;
-    size_t total_idle_time = 0;
-    size_t dispatch_time = 0;
-    size_t service_time = 0;
-    size_t io_time = 0;
-    size_t total_cpu_time = 0;
-    double cpu_utilization = 0.0;
-    double cpu_efficiency = 0.0;
-    size_t thread_counts[4] = {0, 0, 0, 0};
-    double avg_thread_response_times[4] = {0.0, 0.0, 0.0, 0.0};
-    double avg_thread_turnaround_times[4] = {0.0, 0.0, 0.0, 0.0};
+    size_t total_time = 0; // Calculated Already
+    size_t total_idle_time = 0; // 8
+    size_t dispatch_time = 0; // Calculated already
+    size_t service_time = 0; // 5
+    size_t io_time = 0; // 6
+    size_t total_cpu_time = 0; 
+    double cpu_utilization = 0.0; // 9
+    double cpu_efficiency = 0.0; // 10
+    size_t thread_counts[4] = {0, 0, 0, 0}; // 1
+    double avg_thread_response_times[4] = {0.0, 0.0, 0.0, 0.0}; // 3
+    double avg_thread_turnaround_times[4] = {0.0, 0.0, 0.0, 0.0}; // 2
     */
     
-    int response_time = 0;
-    int turnaround_time = 0;
+    int response_time = 0; // response time of each thread
+    int turnaround_time = 0; // turnaround time of each thread
     
+    // 1. Number of threads per process priority (done)
+    // 5. Total service time (done)
+    // 6. Total I/O time (done)
 
-
-    // 1. Number of threads per process priority
     // iterate through each process object in the processes map
     for (auto const& process : processes) {
         // sum up the total number of threads per priority and store in the thread_counts array
         this->system_stats.thread_counts[process.second->priority] += process.second->threads.size();
 
-        // accumulate total response time and total turnaround time for each thread in the process
+        // accumulate total response time, total turnaround time, total service time, and total IO time for each thread in the process
         for (auto const& thread : process.second->threads) {
             response_time += thread->response_time();
             turnaround_time += thread->turnaround_time();
+            this->system_stats.service_time += thread->service_time;
+            this->system_stats.io_time += thread->io_time;
         }
  
     }
 
-    // 2. Average turnaround time per process priority
-    // 3. Average response time per process priority
+    // 2. Average turnaround time per process priority (done)
+    // 3. Average response time per process priority (done)
+    // 4. Total elapsed time (total_time) (provided in Simulation::run())
+    
     // For each priority level
     for(int i = 0; i < 4; i++) {
         // if there are no threads of priority i, then average_response_time[i] and average_turnaround_time[i] = 0 
@@ -269,32 +274,21 @@ SystemStats Simulation::calculate_statistics() {
         
     }
     
+    // TODO 7. Total time spent running the scheduler
+    // TODO not sure which variable this refers to
     
-    // 4. Total elapsed time
-    
-    
-    
-    // 5. Total service time
-    
-    
-    
-    // 6. Total I/O time
+    // 8. Total idle time (done)
+    // idle time = total time - (dispatch time + service time)
+    this->system_stats.total_idle_time = this->system_stats.total_time - (this->system_stats.dispatch_time + this->system_stats.service_time);
     
     
+    // 9. CPU utilization (done)
+    // cpu utilization = ((total time - idle time) / total time) * 100
+    this->system_stats.cpu_utilization = ((this->system_stats.total_time - this->system_stats.total_idle_time) / double(this->system_stats.total_time)) * 100;
     
-    // 7. Total time spent running the scheduler
-    
-    
-    
-    // 8. Total idle time
-    
-    
-    
-    // 9. CPU utilization
-    
-    
-    
-    // 10. CPU efficiency
+    // 10. CPU efficiency (done)
+    // cpu efficiency = (total service time / total time) * 100
+    this->system_stats.cpu_efficiency = (this->system_stats.service_time / double(this->system_stats.total_time)) * 100;
 
     return this->system_stats;
 }
