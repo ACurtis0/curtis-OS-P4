@@ -2,6 +2,8 @@
 #include <iostream>
 
 #include "algorithms/fcfs/fcfs_algorithm.hpp"
+#include "algorithms/spn/spn_algorithm.hpp"
+#include "algorithms/rr/rr_algorithm.hpp"
 // TODO: Include your other algorithms as you make them
 
 #include "simulation/simulation.hpp"
@@ -16,6 +18,17 @@ Simulation::Simulation(FlagOptions flags) {
         this->scheduler = std::make_shared<FCFSScheduler>();
 
     // TODO: Add your other algorithms as you make them
+    }
+    else if(flags.scheduler == "SPN") {
+        this->scheduler = std::make_shared<SPNScheduler>();
+    }    
+    else if(flags.scheduler == "RR") {
+        if(flags.time_slice != -1) {
+            this->scheduler = std::make_shared<RRScheduler>(flags.time_slice);
+        }
+        else {
+            this->scheduler = std::make_shared<RRScheduler>();
+        }
     } else {
         throw("No scheduler found for " + flags.scheduler);        
     }
@@ -206,6 +219,83 @@ void Simulation::handle_dispatcher_invoked(const std::shared_ptr<Event> event) {
 
 SystemStats Simulation::calculate_statistics() {
     // TODO: Calculate the system statistics
+    /*
+    Member variables:
+    size_t total_time = 0;
+    size_t total_idle_time = 0;
+    size_t dispatch_time = 0;
+    size_t service_time = 0;
+    size_t io_time = 0;
+    size_t total_cpu_time = 0;
+    double cpu_utilization = 0.0;
+    double cpu_efficiency = 0.0;
+    size_t thread_counts[4] = {0, 0, 0, 0};
+    double avg_thread_response_times[4] = {0.0, 0.0, 0.0, 0.0};
+    double avg_thread_turnaround_times[4] = {0.0, 0.0, 0.0, 0.0};
+    */
+    
+    int response_time = 0;
+    int turnaround_time = 0;
+    
+
+
+    // 1. Number of threads per process priority
+    // iterate through each process object in the processes map
+    for (auto const& process : processes) {
+        // sum up the total number of threads per priority and store in the thread_counts array
+        this->system_stats.thread_counts[process.second->priority] += process.second->threads.size();
+
+        // accumulate total response time and total turnaround time for each thread in the process
+        for (auto const& thread : process.second->threads) {
+            response_time += thread->response_time();
+            turnaround_time += thread->turnaround_time();
+        }
+ 
+    }
+
+    // 2. Average turnaround time per process priority
+    // 3. Average response time per process priority
+    // For each priority level
+    for(int i = 0; i < 4; i++) {
+        // if there are no threads of priority i, then average_response_time[i] and average_turnaround_time[i] = 0 
+        if(this->system_stats.thread_counts[i] != 0) {
+            this->system_stats.avg_thread_response_times[i] = response_time / double(this->system_stats.thread_counts[i]);
+            this->system_stats.avg_thread_turnaround_times[i] = turnaround_time / double(this->system_stats.thread_counts[i]);
+        }
+        else {
+            this->system_stats.avg_thread_response_times[i] = 0;
+            this->system_stats.avg_thread_turnaround_times[i] = 0;
+        }
+        
+    }
+    
+    
+    // 4. Total elapsed time
+    
+    
+    
+    // 5. Total service time
+    
+    
+    
+    // 6. Total I/O time
+    
+    
+    
+    // 7. Total time spent running the scheduler
+    
+    
+    
+    // 8. Total idle time
+    
+    
+    
+    // 9. CPU utilization
+    
+    
+    
+    // 10. CPU efficiency
+
     return this->system_stats;
 }
 
