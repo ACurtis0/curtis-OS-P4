@@ -24,6 +24,11 @@ public:
 
     // TODO: Add any member variables you may need.
 
+    // Ready queue (PRIORITY queue of Thread pointers)
+    // From fcfs: std::shared_ptr<std::queue<std::shared_ptr<Thread>>> ready = std::make_shared<std::queue<std::shared_ptr<Thread>>>();
+
+    std::shared_ptr<Stable_Priority_Queue<std::shared_ptr<Thread>>> ready = std::make_shared<Stable_Priority_Queue<std::shared_ptr<Thread>>>();
+
     //==================================================
     //  Member functions
     //==================================================

@@ -22,7 +22,11 @@ public:
     //==================================================
 
     // TODO: Add any member variables you may need.
-
+    
+    // Ready queue (functionally just a queue of Thread pointers)
+    // I miss using namespace std :(
+    std::shared_ptr<std::queue<std::shared_ptr<Thread>>> ready = std::make_shared<std::queue<std::shared_ptr<Thread>>>();
+    
     //==================================================
     //  Member functions
     //==================================================
