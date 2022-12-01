@@ -12,17 +12,21 @@
 #include "utilities/flags/flags.hpp"
 
 Simulation::Simulation(FlagOptions flags) {
-    // Hello!
+    // Hello! 
+    // First come first serve
     if (flags.scheduler == "FCFS") {
         // Create a FCFS scheduling algorithm
         this->scheduler = std::make_shared<FCFSScheduler>();
 
     // TODO: Add your other algorithms as you make them
     }
+    // Shortest process next
     else if(flags.scheduler == "SPN") {
         this->scheduler = std::make_shared<SPNScheduler>();
-    }    
+    }
+    // Round robin    
     else if(flags.scheduler == "RR") {
+        // 
         if(flags.time_slice != -1) {
             this->scheduler = std::make_shared<RRScheduler>(flags.time_slice);
         }

@@ -4,6 +4,7 @@
 #include <memory>
 #include <queue>
 #include <stdexcept>
+#include "utilities/stable_priority_queue/stable_priority_queue.hpp"
 #include "algorithms/scheduling_algorithm.hpp"
 
 /*
@@ -24,6 +25,8 @@ public:
     //==================================================
 
     // TODO: Add any member variables you may need
+    // Ready queue (functionally just a queue of Thread pointers)
+    std::shared_ptr<std::queue<std::shared_ptr<Thread>>> ready = std::make_shared<std::queue<std::shared_ptr<Thread>>>();
 
     //==================================================
     //  Member functions
