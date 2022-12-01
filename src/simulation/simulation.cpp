@@ -26,13 +26,7 @@ Simulation::Simulation(FlagOptions flags) {
     }
     // Round robin    
     else if(flags.scheduler == "RR") {
-        // 
-        if(flags.time_slice != -1) {
-            this->scheduler = std::make_shared<RRScheduler>(flags.time_slice);
-        }
-        else {
-            this->scheduler = std::make_shared<RRScheduler>();
-        }
+        this->scheduler = std::make_shared<RRScheduler>(flags.time_slice);
     } else {
         throw("No scheduler found for " + flags.scheduler);        
     }
