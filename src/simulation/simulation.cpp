@@ -27,7 +27,8 @@ Simulation::Simulation(FlagOptions flags) {
     // Round robin    
     else if(flags.scheduler == "RR") {
         this->scheduler = std::make_shared<RRScheduler>(flags.time_slice);
-    } else {
+    } 
+    else {
         throw("No scheduler found for " + flags.scheduler);        
     }
     this->flags = flags;
@@ -232,8 +233,8 @@ SystemStats Simulation::calculate_statistics() {
     double avg_thread_turnaround_times[4] = {0.0, 0.0, 0.0, 0.0}; // 2
     */
     
-    int response_time = 0; // response time of each thread
-    int turnaround_time = 0; // turnaround time of each thread
+    //int response_time = 0; // response time of each thread per priority
+    //int turnaround_time = 0; // turnaround time of each thread per priority
     
     // 1. Number of threads per process priority (done)
     // 5. Total service time (done)
@@ -246,8 +247,10 @@ SystemStats Simulation::calculate_statistics() {
 
         // accumulate total response time, total turnaround time, total service time, and total IO time for each thread in the process
         for (auto const& thread : process.second->threads) {
-            response_time += thread->response_time();
-            turnaround_time += thread->turnaround_time();
+            // Use the existing avg. arrays to accumulate total times
+            this->system_stats.avg_thread_response_times[thread->priority] += thread->response_time();
+            this->system_stats.avg_thread_turnaround_times[thread->priority] += thread->turnaround_time();
+            
             this->system_stats.service_time += thread->service_time;
             this->system_stats.io_time += thread->io_time;
         }
@@ -262,8 +265,8 @@ SystemStats Simulation::calculate_statistics() {
     for(int i = 0; i < 4; i++) {
         // if there are no threads of priority i, then average_response_time[i] and average_turnaround_time[i] = 0 
         if(this->system_stats.thread_counts[i] != 0) {
-            this->system_stats.avg_thread_response_times[i] = response_time / double(this->system_stats.thread_counts[i]);
-            this->system_stats.avg_thread_turnaround_times[i] = turnaround_time / double(this->system_stats.thread_counts[i]);
+            this->system_stats.avg_thread_response_times[i] /= double(this->system_stats.thread_counts[i]);
+            this->system_stats.avg_thread_turnaround_times[i] /= double(this->system_stats.thread_counts[i]);
         }
         else {
             this->system_stats.avg_thread_response_times[i] = 0;

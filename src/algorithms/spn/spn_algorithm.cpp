@@ -38,7 +38,7 @@ std::shared_ptr<SchedulingDecision> SPNScheduler::get_next_thread() {
         // Get the next thread to run from the front (top) of ready queue
         decision->thread = this->ready->top();
         // Set explanation
-        decision->explanation = fmt::format("Selected from {} threads; will run to completion of burst.", this->size());
+        decision->explanation = fmt::format("Selected from {} threads. Will run to completion of burst.", this->size());
         // Pop thread from ready queue
         this->ready->pop();
     }
