@@ -1,3 +1,4 @@
+// Alex Curtis
 #include "algorithms/spn/spn_algorithm.hpp"
 
 #include <cassert>

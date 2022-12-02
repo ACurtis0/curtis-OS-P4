@@ -1,3 +1,4 @@
+// Alex Curtis
 #ifndef RR_ALGORITHM_HPP
 #define RR_ALGORITHM_HPP
 

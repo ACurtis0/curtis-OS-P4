@@ -1,3 +1,4 @@
+// Alex Curtis
 #include "algorithms/rr/rr_algorithm.hpp"
 
 #include <cassert>

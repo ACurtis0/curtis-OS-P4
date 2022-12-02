@@ -1,3 +1,4 @@
+// Alex Curtis
 #ifndef SPN_ALGORITHM_HPP
 #define SPN_ALGORITHM_HPP
 
