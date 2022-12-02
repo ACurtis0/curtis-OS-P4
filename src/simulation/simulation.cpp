@@ -26,7 +26,10 @@ Simulation::Simulation(FlagOptions flags) {
     }
     // Round robin    
     else if(flags.scheduler == "RR") {
-        this->scheduler = std::make_shared<RRScheduler>(flags.time_slice);
+        // If a valid parameter is given (-1 means no preemtion which isn't valid for RR)
+        if(flags.time_slice != -1) this->scheduler = std::make_shared<RRScheduler>(flags.time_slice);
+        // Otherwise, use the default constructor
+        else this->scheduler = std::make_shared<RRScheduler>();
     } 
     else {
         throw("No scheduler found for " + flags.scheduler);        
