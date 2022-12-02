@@ -6,7 +6,7 @@
 #define FMT_HEADER_ONLY
 #include "utilities/fmt/format.h"
 
-// Tasks are scheduled in the order they are added to the ready queue
+// Tasks are scheduled in the order they are added to the ready queue (same as FCFS)
 
 /* Tasks are preempted if their CPU burst length is greater than the time slice
 In the event of a preemption:
@@ -17,15 +17,15 @@ In the event of a preemption:
 // Priority ignored
 
 RRScheduler::RRScheduler(int slice) {    
-    //TODO Implement me
+    this->time_slice = slice;
 }
 
 std::shared_ptr<SchedulingDecision> RRScheduler::get_next_thread() {
     // Create decision to return
     std::shared_ptr<SchedulingDecision> decision = std::make_shared<SchedulingDecision>();
         
-    // TODO Set time slice
-    //decision->time_slice = ;
+    // Set time slice
+    decision->time_slice = this->time_slice;
 
     // if the queue is empty
     if(this->ready->empty()) {
@@ -36,13 +36,18 @@ std::shared_ptr<SchedulingDecision> RRScheduler::get_next_thread() {
     }
     // if not empty
     else {
+
+        decision->thread = this->ready->front();
         
-        // TODO finish this
+        // Set explanation ("ticks" = time slice)
         decision->explanation = fmt::format("Selected from {} threads. Will run for at most {} ticks.", this->size(), this->time_slice);
 
+        // TODO do I actually need to do anything about the preemtion here?
         // if burst length is greater than time slice, preempt
         //if(decision->thread->current_burst()->length > this->time_slice) {}
 
+        // Pop thread from ready queue
+        this->ready->pop();
     }
     
     return decision;
