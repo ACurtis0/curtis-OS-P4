@@ -1,3 +1,4 @@
+// Alex Curtis
 #ifndef PRIORITY_ALGORITHM_HPP
 #define PRIORITY_ALGORITHM_HPP
 
@@ -28,15 +29,14 @@ private:
         //==================================================
         //  Member variables
         //==================================================
-       
-        
-        //std::shared_ptr<PriorityQueue> ready_copy = std::make_shared<PriorityQueue>();
         // TODO: Add any member variables you may need
 
 public:
         // Ready queue (PRIORITY queue of Thread pointers)
         std::shared_ptr<PriorityQueue> ready = std::make_shared<PriorityQueue>();
 
+        // Stores total thread count for each priority
+        int priority_counts[4];
         
         //==================================================
         //  Member functions
