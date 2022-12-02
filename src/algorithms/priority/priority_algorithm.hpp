@@ -30,7 +30,7 @@ private:
         //==================================================
        
         
-        std::shared_ptr<PriorityQueue> ready_copy = std::make_shared<PriorityQueue>();
+        //std::shared_ptr<PriorityQueue> ready_copy = std::make_shared<PriorityQueue>();
         // TODO: Add any member variables you may need
 
 public:

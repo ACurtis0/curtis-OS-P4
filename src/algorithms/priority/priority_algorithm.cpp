@@ -41,7 +41,7 @@ std::shared_ptr<SchedulingDecision> PRIORITYScheduler::get_next_thread() {
         
         // Copy the ready queue to a temporary queue
         // TODO find a more efficient way to do this
-        ready_copy = std::make_shared<PriorityQueue>(*ready);
+        auto ready_copy = std::make_shared<PriorityQueue>(*ready);
 
         // Iterate through the temporary queue
         while(!ready_copy->empty()) {
