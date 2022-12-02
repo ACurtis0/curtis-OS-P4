@@ -21,17 +21,23 @@
 
 // "typedef" this type
 using PriorityQueue = Stable_Priority_Queue<std::shared_ptr<Thread>>; 
+// This makes life so much easier. Why isn't this in the README?
 
 class PRIORITYScheduler : public Scheduler {
 private:
         //==================================================
         //  Member variables
         //==================================================
-
+       
+        
+        std::shared_ptr<PriorityQueue> ready_copy = std::make_shared<PriorityQueue>();
         // TODO: Add any member variables you may need
 
 public:
+        // Ready queue (PRIORITY queue of Thread pointers)
+        std::shared_ptr<PriorityQueue> ready = std::make_shared<PriorityQueue>();
 
+        
         //==================================================
         //  Member functions
         //==================================================

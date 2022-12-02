@@ -4,6 +4,7 @@
 #include "algorithms/fcfs/fcfs_algorithm.hpp"
 #include "algorithms/spn/spn_algorithm.hpp"
 #include "algorithms/rr/rr_algorithm.hpp"
+#include "algorithms/priority/priority_algorithm.hpp"
 // TODO: Include your other algorithms as you make them
 
 #include "simulation/simulation.hpp"
@@ -31,6 +32,10 @@ Simulation::Simulation(FlagOptions flags) {
         // Otherwise, use the default constructor
         else this->scheduler = std::make_shared<RRScheduler>();
     } 
+    // Priority
+    else if(flags.scheduler == "PRIORITY") {
+        this->scheduler = std::make_shared<PRIORITYScheduler>();
+    }
     else {
         throw("No scheduler found for " + flags.scheduler);        
     }
